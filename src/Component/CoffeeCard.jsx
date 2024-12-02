@@ -2,9 +2,43 @@ import React from 'react';
 import { IoEyeSharp } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const CoffeeCard = ({ coffee }) => {
-  const { name, chef, supplier, taste, category, details, photo } = coffee;
+  const { _id, name, chef, supplier, taste, category, details, photo } = coffee;
+
+  const handleDelete = _id => {
+    console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        fetch(`http://localhost:5000/coffee/${_id}`, {
+          method: 'DELETE'
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            if (data.deletedCount > 0) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your Coffee has been deleted.",
+                icon: "success"
+              });
+            }
+          })
+      }
+    });
+
+  }
   return (
     <div>
       <div className="card card-side bg-base-100 shadow-xl">
@@ -25,8 +59,8 @@ const CoffeeCard = ({ coffee }) => {
           <div className="card-actions justify-end">
             <div className="join pt-12 space-y-3 join-vertical">
               <button className="btn bg-orange-200 join-item"><IoEyeSharp className='text-xl text-white' /></button>
-              <button className="btn  bg-slate-700 join-item"><FaPen className='text-white' /></button>
-              <button className="btn bg-red-500 join-item"><MdDelete className='text-white text-xl' /></button>
+              <Link to={`updateCoffee/${_id}`} className="btn  bg-slate-700 join-item"><FaPen className='text-white' /></Link>
+              <button onClick={() => handleDelete(_id)} className="btn bg-red-500 join-item"><MdDelete className='text-white text-xl' /></button>
             </div>
           </div>
         </div>
@@ -36,8 +70,3 @@ const CoffeeCard = ({ coffee }) => {
 };
 
 export default CoffeeCard;
-{/* <div className='flex items-center'>
-  <button className="btn bg-orange-200"><IoEyeSharp className='text-xl text-white' /></button>
-  <button className='btn bg-slate-700'><FaPen className='text-white' /></button>
-  <button className='btn bg-red-500'><MdDelete className='text-white text-xl' /></button>
-</div> */}
