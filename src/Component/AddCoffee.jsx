@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const AddCoffee = () => {
@@ -93,6 +94,7 @@ const AddCoffee = () => {
         </label>
         <div className='pb-12 pt-2'>
           <button className="btn btn-accent w-full rounded-xl">Add Coffee</button>
+          <p className='py-3'>Coffee added finish. Please go back <Link to={'/'} className='ml-1 text-blue-500 underline'>Home Page</Link></p>
         </div>
       </form>
     </div>

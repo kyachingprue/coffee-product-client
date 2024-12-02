@@ -6,10 +6,12 @@ import logo3 from './assets/3.png'
 import logo4 from './assets/4.png'
 import { useLoaderData } from 'react-router-dom'
 import CoffeeCard from './Component/CoffeeCard'
+import { useState } from 'react'
 
 function App() {
 
-  const coffees = useLoaderData();
+  const loadedCoffees = useLoaderData();
+  const [coffees, setCoffees] = useState(loadedCoffees);
 
   return (
     <>
@@ -75,11 +77,14 @@ function App() {
           </div>
         </div>
         {/* Main section starts */}
-        <div>
-          <h2>Total Coffee Data : {coffees.length}</h2>
+        <div className='my-8'>
+          <h2 className='text-4xl font-bold py-6 text-center'>Total Coffee Data : {coffees.length}</h2>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             {
-              coffees.map(coffee => <CoffeeCard key={coffee._id} coffee={coffee}></CoffeeCard>)
+              coffees.map(coffee => <CoffeeCard key={coffee._id} coffee={coffee}
+                coffees={coffees}
+                setCoffees={setCoffees}
+              ></CoffeeCard>)
             }
           </div>
         </div>
